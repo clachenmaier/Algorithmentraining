@@ -99,27 +99,31 @@ vector<size_t> count_matches_fast(const vector<set<string>> &baskets,
   vector<size_t> matches_count(preferences.size());
   map<string, int> fruittypes;
   vector<bitset<28> > basketset(baskets.size());
-  vector<bitset<28> > preferencesset(preferences.size());
+  bitset<28> temp;
   int i = 0;
   for (const auto &basket : baskets) {    
     for (const auto &fruit : basket) {
         if (fruittypes.count(fruit)==0){
           fruittypes.insert({fruit, fruittypes.size()-1});
-          cout << fruit << ' ' << fruittypes.size()-1 << endl;
         }
-        cout << basketset[i] << endl;
-        cout << fruittypes[fruit] << endl;
       basketset[i][fruittypes[fruit]]=1;
 
     }
     i++;
   }
-  i=0;
+  i = 0;
   for (const auto &preference : preferences) {
-    
+    temp.reset();
     for (const auto &fruit : preference) {
-      cout << preferencesset[i] << endl;
-      preferencesset[i][fruittypes[fruit]]=1;
+
+      temp[fruittypes[fruit]]=1;
+    }
+    for (int j = 0; j< basketset.size(); j++){
+      bitset<28> result = basketset[j] & temp;
+      if (result.count()>= 3 ){
+        matches_count[i]++;
+      }
+
     }
     i++;
   }
@@ -142,7 +146,7 @@ int main() {
   vector<set<string>> baskets = get_baskets("baskets.txt");
   vector<set<string>> preferences = get_baskets("preferences.txt");
   count_matches_fast(baskets, preferences);
-  /*
+  
   TIMERSTART(naive)
   auto results_naive = count_matches_naive(baskets, preferences);
   TIMERSTOP(naive)
@@ -153,5 +157,5 @@ int main() {
 
   assert(results_naive == results_fast);
   
-  cout << "all tests passed" << endl;*/
+  cout << "all tests passed" << endl;
 }
