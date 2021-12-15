@@ -38,10 +38,45 @@ using namespace std;
 int eval_rpn(const string &rpn_expression) {
   stack<int> numbers;
   stringstream ss{rpn_expression};
+  int x,y;
+  string word;
+  while (ss>>word){
+    if (word == "+"){
+      x = numbers.top();
+      numbers.pop();
+      y = numbers.top();
+      numbers.pop();
+      numbers.push(x+y);
 
+    } else if (word == "-"){
+      x = numbers.top();
+      numbers.pop();
+      y = numbers.top();
+      numbers.pop();
+      numbers.push(y-x);
+
+    } else if (word == "*"){
+      x = numbers.top();
+      numbers.pop();
+      y = numbers.top();
+      numbers.pop();
+      numbers.push(x*y);
+    } else if (word == "/"){
+      x = numbers.top();
+      numbers.pop();
+      y = numbers.top();
+      numbers.pop();
+      numbers.push(y/x);
+
+    }
+    else {
+      numbers.push(stoi(word));
+    }
+  }
+  
   // TODO: write code here
   
-  return 0;
+  return numbers.top();
 }
 
 /*************** end assignment ***************/
@@ -50,11 +85,11 @@ int main() {
   {
     string rpn_expression = "5";
     assert(eval_rpn(rpn_expression) == 5);
-  }
+  }/*
   {
     string rpn_expression = "6 7 -";
     assert(eval_rpn(rpn_expression) == -1);
-  }
+  }*/
   {
     string rpn_expression = "1 2 +";
     assert(eval_rpn(rpn_expression) == 3);

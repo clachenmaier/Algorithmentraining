@@ -54,10 +54,18 @@ inline uint32_t reverse_simple(uint32_t num) {
 
 // TODO: Use the lookup table at line 18 to reverse the bits of an unsigned 32-bit integer.
 inline uint32_t reverse_with_lookup(uint32_t num) {
+//int reverse_with_lookup(uint32_t num) {
   uint32_t result = 0;
-  cout << (int) num << endl;
-  // TODO: write code here
-  return result;
+  uint32_t reverse = 0;
+  
+  // Reverse and then rearrange 
+  
+  reverse = lookup[ num & 0xff ]<<24 | 
+                lookup[ (num >> 8) & 0xff ]<<16 |   
+                lookup[ (num >> 16 )& 0xff ]<< 8 |
+                lookup[ (num >>24 ) & 0xff ] ;
+    
+  return reverse;
 }
 
 /*************** end assignment ***************/
@@ -73,8 +81,8 @@ int main() {
     uint32_t num = rand_uint32();
     // test if lookup version produces the correct results
     reverse_with_lookup(num);
-  //  assert(reverse_simple(num) == reverse_with_lookup(num));
+    assert(reverse_simple(num) == reverse_with_lookup(num));
   }
-  //cout << "all tests passed" << endl;
+  cout << "all tests passed" << endl;
   //reverse_with_lookup(n);
 }

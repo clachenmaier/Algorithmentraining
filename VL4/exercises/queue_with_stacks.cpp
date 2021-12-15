@@ -29,18 +29,35 @@ private:
 
 public:
   // TODO: implement enqueue
-  void enqueue(T x) {}
+  void enqueue(T x) {
+    enq.push(x);
+  }
 
   // TODO: implement dequeue
   T dequeue() {
-    return T{};
+    if (enq.empty() && deq.empty()){
+      exit(0);
+    }
+    if (deq.empty()){
+      while( !enq.empty()){
+        deq.push(enq.top());
+        enq.pop();
+      }
+    }
+    T tmp = deq.top();
+    deq.pop();
+    return tmp;
   }
 
   // convenience functions
   // TODO: implement size
-  size_t size() { return 0; }
+  size_t size() {
+    return deq.size()+enq.size(); 
+  }
   // TODO: implement empty
-  bool empty() { return true; }
+  bool empty() { 
+    return deq.empty() && enq.empty(); 
+  }
 };
 /*************** end assignment ***************/
 

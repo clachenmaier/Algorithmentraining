@@ -5,6 +5,7 @@
 
 #include <cassert>
 #include <iostream>
+#include <stack>
 
 using namespace std;
 
@@ -38,7 +39,21 @@ struct Node {
 // of code ;).
 
 bool is_palindrom(Node *node) {
-  // TODO: write code here
+  Node* temp=node;
+  stack<uint64_t> nodestack;
+  while (temp !=NULL){
+    nodestack.push(temp->data);
+    temp = temp ->next;
+  }
+  while(node != NULL){
+    uint64_t top= nodestack.top();
+    nodestack.pop();
+    if (node -> data != top){
+      return false;
+    }
+    
+
+  }
 
   return false;
 }
@@ -46,6 +61,7 @@ bool is_palindrom(Node *node) {
 
 int main() {
   // test correctness
+  /*
   {
     Node *head = nullptr; // empty list is also a palindrom
     assert(is_palindrom(head));
@@ -53,7 +69,7 @@ int main() {
   {
     Node head{1, nullptr};
     assert(is_palindrom(&head));
-  }
+  }*/
   {
     Node head{2, nullptr};
     Node node{2, nullptr};

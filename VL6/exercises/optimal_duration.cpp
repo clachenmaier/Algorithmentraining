@@ -39,11 +39,22 @@ using namespace std;
 // (there is an even number of tasks,
 // a single task duration is between 0 and 10000)
 unsigned int optimal_duration(const vector<unsigned int> &tasks) {
-  unsigned int total_duration = 0;
-
-  // TODO: write your code here
+  vector<int> temp(tasks.size());  
+  vector<unsigned int> results(tasks.size()/2);
+  for (int i = 0 ; i< tasks.size(); i++){
+    temp[i] = tasks[i]; 
+  }
+  sort(temp.begin(), temp.end());
+  for (int i = 0; i < tasks.size()/2; i++){
+    results[i]= temp[i] + temp[temp.size()-1 -i ];    
+  }
+  if (results.size()>0){
+    return *max_element(results.begin(), results.end());
+  } else {
+    return 0;
+  }
   
-  return total_duration;
+  
 }
 
 /*************** end assignment ***************/

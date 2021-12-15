@@ -86,13 +86,66 @@ uint32_t obfuscated(uint32_t o_abab67357a45d416943cc4921e785b98) {
 //   find the best choice.
 
 uint32_t max_flip_sequence_size(uint32_t n) {
-  
-  // TODO: write code here
-  return 0;
+  if (~n==0)
+  return 8*sizeof(int);
+ 
+    int currLen = 0, prevLen = 0, maxLen = 0;
+    while (n!= 0)
+    {
+        // If Current bit is a 1 then increment currLen++
+        if ((n & 1) == 1)
+            currLen++;
+ 
+        // If Current bit is a 0 then check next bit of a
+        else if ((n & 1) == 0)
+        {
+            /* Update prevLen to 0 (if next bit is 0)
+            or currLen (if next bit is 1). */
+            prevLen = (n & 2) == 0? 0 : currLen;
+ 
+            // If two consecutively bits are 0
+            // then currLen also will be 0.
+            currLen = 0;
+        }
+ 
+        // Update maxLen if required
+        maxLen = max(prevLen + currLen, maxLen);
+ 
+        // Remove last bit (Right shift)
+        n >>= 1;
+    }
+ 
+    // We can always have a sequence of
+    // at least one 1, this is flipped bit
+    return maxLen+1;
+}
+
+int flipBit(unsigned a)
+{
+    if (~a == 0)
+        return 8*sizeof(int);
+ 
+    int currLen = 0, prevLen = 0, maxLen = 0;
+    while (a!= 0)
+    {
+        if ((a & 1) == 1)
+            currLen++;
+        else if ((a & 1) == 0)
+        {
+            prevLen = (a & 2) == 0? 0 : currLen;
+
+            currLen = 0;
+        }
+        maxLen = max(prevLen + currLen, maxLen);
+        a >>= 1;
+    }
+    return maxLen+1;
 }
 /*************** end assignment ***************/
 
 int main() {
+  //max_flip_sequence_size(2);
+  
   // test correctness
   assert(max_flip_sequence_size(UINT32_MAX) == 32);
   assert(max_flip_sequence_size(0) == 1);
@@ -110,4 +163,5 @@ int main() {
     assert(max_flip_sequence_size(num) == obfuscated(num));
   }
   cout << "all tests passed" << endl;
+  
 }

@@ -59,28 +59,15 @@ int count_permutations(const string &s, const string &b) {
 
   for (int i = snippetSize; i < textSize; i++)
     {
-        // Compare counts of current window of text with
-        // counts of pattern[]
         if (compare(countS, countB)){
             count++;
         }
- 
-        // Add current character to current window
         (countB[b[i]])++;
- 
-        // Remove the first character of previous window
         (countB[b[i-snippetSize]])--;
     }
- 
-    // Check for the last window in text
     if (compare(countS, countB)){
         count++;
     }
-
-  // TODO: given a smaller string s and a bigger string b, design an algorithm
-  //  that needs at most O(B * S^2) time to count all permutation appearances
-  //  of the shorter string within the longer string
-  cout << "endcount" << count << endl;
   return count;
   }
   return 0;

@@ -6,6 +6,7 @@
 #include <cassert>
 #include <chrono>
 #include <iostream>
+#include <cmath>
 
 using namespace std;
 
@@ -44,20 +45,27 @@ int compute_amount_brute_force(const int n) {
   return amount;
 }
 
-// try to improve the time complexity
-// (if you can't, try at least to improve the execution time)
 int compute_amount(const int n) {
   int amount = 0;
+  for (int a = 1; a <= n; ++a) {
+    for (int b = 1; b <= a; ++b) {
+      for (int c = 1; c <= n; ++c) {
+        for (int d = 1; d <= c; ++d) {
 
-  // TODO: Compute the amount of all positive integer solutions in less 
-  //  than O(n^4) runtime (you can use additional memory)
-
-  return amount;
+          if (a * a * a + b * b * b == c * c * c + d * d * d) {
+            ++amount;
+          }
+        }
+      }
+    }
+  }
+  return amount*4-3*n;
 }
 /*************** end assignment ***************/
 
 int main() {
   // test correctness of implementation
+  
   for (int n = 1; n < 100; ++n) {
     assert(compute_amount_brute_force(n) == compute_amount(n));
   }
@@ -74,4 +82,6 @@ int main() {
   TIMERSTOP(improved)
 
   assert(result_bf == result);
+  return 0;
+  
 }

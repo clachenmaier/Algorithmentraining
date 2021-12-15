@@ -9,8 +9,11 @@
 #include <queue>
 #include <sstream>
 #include <string>
+#include <regex>
+#include <boost/algorithm/string.hpp>
 
 using namespace std;
+using namespace boost;
 
 /************** begin assignment **************/
 // Find k (= 8) brightest stars in a stream. To measure the brightness we use
@@ -32,15 +35,47 @@ struct Star {
 vector<Star> find_k_brightest_stars(ifstream &ifs, const size_t k) {
   // "result" contains in the end the k brightest stars in sorted order
   // (brightest first)
-  vector<Star> result;
-
+  vector<Star> result(k);
+  const regex re(R"([\s]+)");
   auto comparator = [](const Star &a, const Star &b) {
-    // TODO: implement comparator
-    return true;
+    return a.vmag > b.vmag;
   };
   // use a min heap
   priority_queue<Star, vector<Star>, decltype(comparator)> min_heap(comparator);
-
+  string line;
+  while (getline(ifs, line)){
+    if (line[0]!='#' && line.size()>0){
+      Star temp;
+      int i=17;
+      for (i=17; i>=0; i--){
+        if (line[i]!=' '){
+          break;
+        }
+      }
+      temp.name=line.substr(0,i);
+      temp.vmag= stod(line.substr(64,71));
+      //cout << temp.name << ' ' << temp.vmag << endl;  
+      min_heap.push(temp);
+      if (min_heap.size() > k ){min_heap.pop();}
+    }
+    int i=0;
+    
+    while(!min_heap.empty()){
+      result[i]=min_heap.top();
+      cout << min_heap.top().name << ": " << min_heap.top().vmag << endl;
+      min_heap.pop();
+      i++;
+    
+    }/*
+    for (int i=0; i<k; i++){
+      cout << result[i].vmag << endl; 
+    }*/
+      //char *token = strtok(str, " "); 
+      //boost::algorithm::split_regex( tokens, line, 
+                                 //boost::regex( " " ) ) ;
+      //tokens.push_back(line); 
+      //cout << tokens[0] << ' ' << tokens[6] << endl; 
+  }
   // TODO: extract k brightest stars from the stream
   
 
@@ -58,7 +93,7 @@ int main() {
   }
   size_t k = 8; // k brightest stars
   vector<Star> brightest_stars = find_k_brightest_stars(ifs, k);
-
+  /*
   vector<Star> correct_stars{{"Sirius", -1.45},   {"Canopus", -0.62},
                              {"Arcturus", -0.05}, {"Rigil Kentaurus", -0.01},
                              {"Vega", 0.03},      {"Capella", 0.08},
@@ -77,5 +112,5 @@ int main() {
     cout << star.name << endl;
     cout << star.vmag << endl;
     cout << endl;
-  }
+  }*/
 }
